@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Time Page</title>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            // Format the time as HH:MM:SS
+            const formattedTime = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+            document.getElementById("time").textContent = formattedTime;
+
+            // Change background color based on the hour
+            let body = document.body;
+            if (hours >= 6 && hours < 12) { // Morning (6 AM - 12 PM)
+                body.style.backgroundColor = "#f9f5e7"; // Light beige
+            } else if (hours >= 12 && hours < 18) { // Afternoon (12 PM - 6 PM)
+                body.style.backgroundColor = "#d3cedf"; // Light purple
+            } else { // Night (6 PM - 6 AM)
+                body.style.backgroundColor = "#212529"; // Dark grey
+                body.style.color = "#fff";
+            }
+        }
+
+        function pad(number) {
+            return (number < 10 ? "0" : "") + number;
+        }
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const currentBackgroundColor = window.getComputedStyle(body).backgroundColor;
+
+            if (currentBackgroundColor === "rgb(249, 245, 231)" || currentBackgroundColor === "rgb(211, 206, 223)") { //morning or afternoon
+                body.style.backgroundColor = "#212529"; // Dark grey
+                body.style.color = "#fff";
+            } else {
+                body.style.backgroundColor = "#f9f5e7"; // Light beige
+                body.style.color = "#000";
+            }
+        }
+
+        // Update time every second
+        setInterval(updateTime, 1000);
+        // Initial call to set the time and background color when the page loads
+        updateTime();
+    </script>
+    <style>
+        body {
+            transition: background-color 0.5s ease; /* Smooth transition */
+            color: #000;
+        }
+
+        #time {
+            font-size: 4em;
+            text-align: center;
+            margin-top: 20vh;
+            font-family: sans-serif;
+        }
+
+        .dark-mode-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .dark-mode-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="time"></div>
+    <button class="dark-mode-button" onclick="toggleDarkMode()">Dark Mode</button>
+</body>
+</html>
